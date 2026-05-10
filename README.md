@@ -39,9 +39,13 @@ I built a beginner SOC home lab using a Windows 11 virtual machine, Sysmon, and 
 
 Sysmon was installed and verified through Windows Event Viewer. The lab successfully generated endpoint telemetry including process creation, registry activity, and DNS related events.
 
+![Event Viewer showing Sysmon logs](screenshots/event-viewer-sysmon-logs.png)
+
 ## Splunk Log Review and Basic SPL
 
 Splunk Enterprise was used to search, filter, and summarize SIEM data from the Windows 11 lab host. I used basic SPL to validate ingestion, review Sysmon events, and investigate process creation activity.
+
+![Splunk showing Sysmon ingestion](screenshots/splunk-sysmon-ingestion.png)
 
 ### Validate log ingestion by source
 
@@ -51,6 +55,8 @@ index=main
 ```
 
 This search was used to confirm that Splunk was receiving logs from different Windows sources, including Sysmon.
+
+![Splunk stats count by source](screenshots/splunk-stats-count-by-source.png)
 
 ### Search Sysmon logs only
 
@@ -98,6 +104,22 @@ The following process creation events were reviewed using Sysmon Event ID 1 and 
 | PowerShell | Reviewed powershell.exe process creation from Windows Explorer |
 | Google Chrome | Reviewed chrome.exe process creation from Windows Explorer |
 
+### Command Prompt Investigation
+
+![Command Prompt process investigation](screenshots/command-prompt-investigation.png)
+
+### Notepad Investigation
+
+![Notepad process investigation](screenshots/splunk-search-sysmon-notepad-events.png)
+
+### PowerShell Investigation
+
+![PowerShell process investigation](screenshots/powershell-investigation.png)
+
+### Chrome Investigation
+
+![Chrome process investigation](screenshots/chrome-investigation.png)
+
 ## Example Finding
 
 A Sysmon Event ID 1 process creation event for `cmd.exe` was identified in Splunk on host `SOC-WN11`. The event showed the executable path, command line, user, parent process, and host. The activity was reviewed and documented as normal user activity in the lab environment.
@@ -121,6 +143,8 @@ Snapshot name:
 ```text
 Clean-Before-Atomic-Red-Team
 ```
+![VMware snapshot before testing](screenshots/vmware-snapshot.png)
+
 ## PowerShell Preparation
 
 I checked the current PowerShell execution policy using:
@@ -130,6 +154,8 @@ Get-ExecutionPolicy -List
 ```
 
 The `CurrentUser` scope was changed to `Bypass` so Atomic Red Team PowerShell scripts could run inside the lab VM. The change was confirmed by rerunning the execution policy check.
+
+![PowerShell execution policy](screenshots/powershell-execution-policy.png)
 
 ## What I Learned
 
